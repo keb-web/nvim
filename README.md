@@ -1,5 +1,10 @@
 # kickstart-modular.nvim
 
+
+## kickstart-modular.nvim syncing  
+  `git fetch upstream`
+  `git merge upstream/main`
+
 ## Introduction
 
 *This is a fork of [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) that moves from a single file to a multi file configuration.*
