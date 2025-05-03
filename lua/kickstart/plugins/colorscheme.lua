@@ -22,17 +22,20 @@ return {
     end,
   },
   {
-    "olimorris/onedarkpro.nvim",
+    'olimorris/onedarkpro.nvim',
     priority = 1000,
     config = function()
-      require('onedarkpro').setup({
+      require('onedarkpro').setup {
         highlights = {
           Comment = { italic = true },
           Directory = { bold = true },
-        }
-      })
-      vim.cmd.colorscheme "onedark"
-    end
-  }
+        },
+      }
+      -- vim.g.onedark_hide_endofbuffer = 1
+      vim.g.onedark_termcolors = 256
+      vim.g.onedark_terminal_italics = 1
+      vim.cmd.colorscheme 'onedark'
+    end,
+  },
 }
 -- vim: ts=2 sts=2 sw=2 et
