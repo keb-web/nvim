@@ -120,7 +120,25 @@ return {
     opts = {
       indent = { enabled = true },
       bufdelete = { enabled = true },
-      terminal = { enabled = true },
     },
+  },
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {},
+  },
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    config = function()
+      require('toggleterm').setup {
+        direction = 'float',
+      }
+      local keymap = vim.keymap.set
+      local opts = { noremap = true, silent = true, desc = 'toggle terminal' }
+      keymap('n', '<C-;>', '<cmd>ToggleTerm direction=float<CR>', opts)
+      keymap('i', '<C-;>', '<Esc><cmd>ToggleTerm direction=float<CR>', opts)
+      keymap('t', '<C-;>', [[<C-\><C-n><cmd>ToggleTerm direction=float<CR>]], opts)
+    end,
   },
 }

@@ -9,6 +9,7 @@ return {
 
     'echasnovski/mini.ai',
     version = '*',
+    opts = {},
   },
   {
     'echasnovski/mini.statusline',
@@ -46,6 +47,9 @@ return {
   {
     'echasnovski/mini.icons',
     version = '*',
+    config = function()
+      require('mini.icons').setup {}
+    end,
   },
 }
 -- vim: ts=2 sts=2 sw=2 et

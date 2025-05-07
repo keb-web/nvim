@@ -28,8 +28,8 @@ vim.keymap.set('n', '<leader>bo', function()
 end, { desc = 'Delete Other Buffers' })
 
 -- Terminals
-vim.keymap.set('n', '<leader>;', '<cmd>lua Snacks.terminal()<cr>', { desc = '[t]oggle [t]erminal' })
-
+-- vim.keymap.set('n', '<C-;>', '<cmd>lua Snacks.terminal.toggle()<cr>', { desc = '[t]oggle [t]erminal' })
+--
 --
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -66,6 +66,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank()
   end,
+})
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Load Session when entering nvim',
+  group = vim.api.nvim_create_augroup('restore_session', { clear = true }),
+  callback = function()
+    if vim.fn.getcwd() ~= vim.env.HOME then
+      require('persistence').load()
+    end
+  end,
+  nested = true,
 })
 
 -- vim: ts=2 sts=2 sw=2 et
