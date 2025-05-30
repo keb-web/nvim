@@ -11,9 +11,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Make U opposite to u.
 vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
 
--- Escape and save changes.
-vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-s>', '<esc>:w<cr>', { desc = 'Exit insert mode and save changes.' })
-vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-S-s>', '<esc>:wa<cr>', { desc = 'Exit insert mode and save all changes.' })
+-- -- Escape and save changes.
+-- vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-s>', '<esc>:w<cr>', { desc = 'Exit insert mode and save changes.' })
+-- vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-S-s>', '<esc>:wa<cr>', { desc = 'Exit insert mode and save all changes.' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -77,6 +77,35 @@ vim.api.nvim_create_autocmd('VimEnter', {
     end
   end,
   nested = true,
+})
+
+-- define vertical column for python files
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Add right margin ruler for python files',
+  pattern = 'python',
+  callback = function()
+    vim.opt_local.colorcolumn = '80'
+  end,
+})
+
+-- saving
+local function clear_cmdarea()
+  vim.defer_fn(function()
+    vim.api.nvim_echo({}, false, {})
+  end, 800)
+end
+
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
+  desc = 'Auto save since im tired of :wa',
+  callback = function()
+    if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
+      vim.cmd 'silent w'
+      -- local time = os.date '%I:%M %p'
+      -- print nice colored msg
+      -- vim.api.nvim_echo({ { '󰄳', 'LazyProgressDone' }, { ' file autosaved at ' .. time } }, false, {})
+      clear_cmdarea()
+    end
+  end,
 })
 
 -- vim: ts=2 sts=2 sw=2 et

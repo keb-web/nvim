@@ -120,6 +120,7 @@ return {
     opts = {
       indent = { enabled = true },
       bufdelete = { enabled = true },
+      notifier = { enabled = true },
     },
   },
   {
@@ -140,5 +141,29 @@ return {
       keymap('i', '<C-;>', '<Esc><cmd>ToggleTerm direction=float<CR>', opts)
       keymap('t', '<C-;>', [[<C-\><C-n><cmd>ToggleTerm direction=float<CR>]], opts)
     end,
+  },
+  {
+    'Bekaboo/deadcolumn.nvim',
+    config = function()
+      require('deadcolumn').setup {
+        scope = 'buffer',
+        modes = { 'n', 'i' },
+      }
+    end,
+  },
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      'MunifTanjim/nui.nvim',
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      'rcarriga/nvim-notify',
+    },
   },
 }
