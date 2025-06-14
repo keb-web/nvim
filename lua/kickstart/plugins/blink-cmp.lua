@@ -94,7 +94,15 @@ return {
       fuzzy = { implementation = 'prefer_rust' },
 
       -- Shows a signature help window while you type arguments for a function
-      signature = { enabled = true },
+      -- signature = { enabled = true },
+
+      -- completion for commandline in noice
+      cmdline = {
+        completion = {
+          menu = { auto_show = true },
+          ghost_text = { enabled = true },
+        },
+      },
     },
   },
 }

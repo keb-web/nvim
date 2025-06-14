@@ -7,8 +7,10 @@
 -- vim.opt.colorcolumn = '80'
 -- vim.opt.termguicolors = true
 
--- Make line numbers default
+-- Line Numbers & Relative Line Numbers
+vim.o.relativenumber = true
 vim.o.number = true
+
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.o.relativenumber = true

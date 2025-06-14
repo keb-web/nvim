@@ -23,6 +23,7 @@ return {
   },
   {
     'olimorris/onedarkpro.nvim',
+    enabled = false,
     priority = 1000,
     config = function()
       require('onedarkpro').setup {
@@ -35,6 +36,14 @@ return {
       vim.g.onedark_termcolors = 256
       vim.g.onedark_terminal_italics = 1
       vim.cmd.colorscheme 'onedark'
+    end,
+  },
+  {
+    'thesimonho/kanagawa-paper.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'kanagawa-paper-ink'
     end,
   },
 }
