@@ -11,16 +11,6 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Make U opposite to u.
 vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
 
--- keep cursor centered
--- vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll downwards' })
--- vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
--- vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next result' })
--- vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous result' })
-
--- -- Escape and save changes.
--- vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-s>', '<esc>:w<cr>', { desc = 'Exit insert mode and save changes.' })
--- vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-S-s>', '<esc>:wa<cr>', { desc = 'Exit insert mode and save all changes.' })
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -35,8 +25,8 @@ end, { desc = 'Delete Other Buffers' })
 
 -- Terminals
 -- vim.keymap.set('n', '<C-;>', '<cmd>lua Snacks.terminal.toggle()<cr>', { desc = '[t]oggle [t]erminal' })
---
---
+
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.

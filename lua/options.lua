@@ -3,6 +3,11 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.o.tabstop = 4
+vim.o.smartindent = true
+vim.o.shiftwidth = 4
+vim.expandtab = true
+
 -- -- Add column under 80 chars -- set using autocmd for only python files
 -- vim.opt.colorcolumn = '80'
 -- vim.opt.termguicolors = true
