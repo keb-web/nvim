@@ -18,9 +18,9 @@ return {
       -- Required dependency for nvim-dap-ui
       'nvim-neotest/nvim-nio',
 
-      -- Installs the debug adapters for you
-      'williamboman/mason.nvim',
-      'jay-babu/mason-nvim-dap.nvim',
+    -- Installs the debug adapters for you
+    'mason-org/mason.nvim',
+    'jay-babu/mason-nvim-dap.nvim',
 
       -- Add your own debuggers here
       -- 'leoluz/nvim-dap-go',
