@@ -7,6 +7,7 @@
 
 return {
   { -- Fuzzy Finder (files, lsp, etc)
+    enabled = false,
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     dependencies = {
@@ -109,8 +110,8 @@ return {
       end, { desc = '[S]earch [N]eovim files' })
     end,
 
-      -- search todos
-    vim.keymap.set('n', '<leader>st', '<cmd>Telescope todo-comments<CR>', {desc ='[S]earch [T]ODO'})
+    -- search todos
+    vim.keymap.set('n', '<leader>st', '<cmd>Telescope todo-comments<CR>', { desc = '[S]earch [T]ODO' }),
   },
 }
 -- vim: ts=2 sts=2 sw=2 et

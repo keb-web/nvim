@@ -12,13 +12,6 @@ return {
     opts = {},
   },
   {
-    'echasnovski/mini.statusline',
-    version = '*',
-    -- local my_active_content = function()
-    -- end,
-    opts = {},
-  },
-  {
     'echasnovski/mini.files',
     opts = {
       windows = {
