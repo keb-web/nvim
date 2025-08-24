@@ -52,23 +52,22 @@ vim.pack.add({
   { src = 'https://github.com/mfussenegger/nvim-lint' },
   { src = 'https://github.com/folke/persistence.nvim'},
   { src = 'https://github.com/rachartier/tiny-inline-diagnostic.nvim' },
+	{ src = 'https://github.com/vim-test/vim-test'},
   { src = 'https://github.com/christoomey/vim-tmux-navigator'},
 })
 
--- WIP: neotest
--- require('neotest')
 
-require 'tiny-inline-diagnostic'.setup({
-  options = { multilines = {enabled = true} }
-})
-require 'gitsigns'.setup()
-require 'nvim-surround'.setup()
-require 'persistence'.setup()
 require 'deadcolumn'.setup()
+require 'gitsigns'.setup()
 require 'mini.ai'.setup()
 require 'mini.files'.setup()
 require 'mini.icons'.setup()
 require 'mini.pick'.setup()
+require 'nvim-surround'.setup()
+require 'persistence'.setup()
+require 'tiny-inline-diagnostic'.setup({
+  options = { multilines = {enabled = true} }
+})
 
 -- [[MAPPINGS]] --
 local map = vim.keymap.set
@@ -91,30 +90,30 @@ map('n', '<leader>G', ':lua MiniPick.builtin.grep()<CR>')
 map('n', '<leader>e', ':lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>')
 map('n', '<leader>E', ':lua MiniFiles.open(vim.uv.cwd())<CR>')
 map('n', '<leader>p', function() require('persistence').load() end)
-map('n', '<leader>lg', '<cmd>LazyGit<cr>')
-map('n', '<c-h>', ':<C-U>TmuxNavigateLeft<cr>' )
-map('n', '<c-j>', ':<C-U>TmuxNavigateDown<cr>' )
-map('n', '<c-k>', ':>TmuxNavigateUp<cr>' )
-map('n', '<c-l>', ':<C-U>TmuxNavigateRight<cr>' )
+map('n', '<leader>lg', '<cmd>LazyGit<CR>')
+map('n', '<c-h>', ':<C-U>TmuxNavigateLeft<CR>' )
+map('n', '<c-j>', ':<C-U>TmuxNavigateDown<CR>' )
+map('n', '<c-k>', ':>TmuxNavigateUp<CR>' )
+map('n', '<c-l>', ':<C-U>TmuxNavigateRight<CR>' )
+map('n', '<leader>tn', ':TestNearest<CR>')
+map('n', '<leader>tf', ':TestFile<CR>')
+map('n', '<leader>ts', ':TestSuite<CR>')
+map('n', '<leader>tc', ':TestClass<CR>')
+map('n', '<leader>tl', ':TestLast<CR>')
+map('n', '<leader>tv', ':TestVisit<CR>')
 
---
 -- [[COLORSCHEME]] --
 vim.pack.add({{src = 'https://github.com/neanias/everforest-nvim'}})
 require 'everforest'.setup()
 vim.cmd.colorscheme 'everforest'
--- vim.pack.add({{
---     name='gruvbox-material',
---     src = 'https://github.com/f4z3r/gruvbox-material.nvim/'}})
--- require('gruvbox-material').setup()
--- vim.cmd.colorscheme 'gruvbox-material'
 
 
 -- [[LSP]] --
 require('lsp')
 
+
 -- [[COMPLETION]]
 require('cmp')
-
 
 
 -- [[LINT]] --
@@ -122,6 +121,7 @@ local lint = require('lint')
 lint.linters_by_ft = {
   python = { 'flake8' }
 }
+
 
 -- [[AUTO COMMANDS]] --
 local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
