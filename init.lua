@@ -49,6 +49,7 @@ vim.pack.add({
   { src = 'https://github.com/echasnovski/mini.pick' },
   { src = 'https://github.com/echasnovski/mini.notify' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main', build = ':TSUpdate' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/mfussenegger/nvim-lint' },
   { src = 'https://github.com/folke/persistence.nvim'},
@@ -57,6 +58,16 @@ vim.pack.add({
   { src = 'https://github.com/christoomey/vim-tmux-navigator'},
 })
 
+require "nvim-treesitter".setup()
+vim.api.nvim_create_autocmd('FileType', {
+pattern = { 'python', 'rust', 'javascript', 'zig' },
+callback = function()
+  vim.treesitter.start() -- Neovim syntax highlighting
+  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Neovim Folds
+  vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Neovim indentation
+end,
+
+})
 require 'deadcolumn'.setup()
 require 'gitsigns'.setup()
 require 'mini.ai'.setup()
@@ -177,4 +188,6 @@ vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
     end
   end,
 })
+
+
 -- vim: ts=2 sts=2 sw=2 et
