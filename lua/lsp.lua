@@ -10,6 +10,13 @@ local map = vim.keymap.set
 map('n', 'grn', vim.lsp.buf.rename)
 map('n', 'gra', vim.lsp.buf.code_action)
 map("n", "gd", vim.lsp.buf.definition)
+map("n", "<leader>ud", function()
+  if vim.diagnostic.is_enabled() then
+    vim.diagnostic.disable()
+  else
+    vim.diagnostic.enable()
+  end
+end, { desc = "Toggle diagnostics" })
 
 -- turn off lsp when working on nvim files
 vim.lsp.config('lua_ls', {

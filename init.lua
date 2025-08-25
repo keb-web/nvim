@@ -19,7 +19,7 @@ vim.o.mouse = 'a'  -- Enable mouse mode
 vim.o.undofile = true -- Save undo history
 vim.o.signcolumn = 'yes' -- Column where signs appear on left
 vim.o.inccommand = 'split' -- Preview substitutions live as you type
-vim.o.scrolloff = 50 -- Number of screen kept above and below the cursor
+vim.o.scrolloff = 99 -- Number of screen kept above and below the cursor
 vim.o.confirm = true -- Raise a dialog to confirm file(s) save if possible fail
 
 -- Case-insensitive searching 
@@ -47,6 +47,7 @@ vim.pack.add({
   { src = 'https://github.com/echasnovski/mini.files' },
   { src = 'https://github.com/echasnovski/mini.icons' },
   { src = 'https://github.com/echasnovski/mini.pick' },
+  { src = 'https://github.com/echasnovski/mini.notify' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/mfussenegger/nvim-lint' },
@@ -56,18 +57,20 @@ vim.pack.add({
   { src = 'https://github.com/christoomey/vim-tmux-navigator'},
 })
 
-
 require 'deadcolumn'.setup()
 require 'gitsigns'.setup()
 require 'mini.ai'.setup()
 require 'mini.files'.setup()
 require 'mini.icons'.setup()
 require 'mini.pick'.setup()
+require 'mini.notify'.setup()
+require 'nvim-treesitter'.setup()
 require 'nvim-surround'.setup()
 require 'persistence'.setup()
 require 'tiny-inline-diagnostic'.setup({
   options = { multilines = {enabled = true} }
 })
+
 
 -- [[MAPPINGS]] --
 local map = vim.keymap.set
@@ -85,8 +88,7 @@ map('n', '<Esc>', '<cmd>nohlsearch<CR>') -- Clear Search
 -- plugin mappings
 map('n', '<leader>f', ':Pick files<CR>')
 map('n', '<leader>h', ':Pick help<CR>')
-map('n', '<leader>g', ':lua MiniPick.builtin.grep_live()<CR>')
-map('n', '<leader>G', ':lua MiniPick.builtin.grep()<CR>')
+map('n', '<leader>/', ':lua MiniPick.builtin.grep_live()<CR>')
 map('n', '<leader>e', ':lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>')
 map('n', '<leader>E', ':lua MiniFiles.open(vim.uv.cwd())<CR>')
 map('n', '<leader>p', function() require('persistence').load() end)
@@ -103,14 +105,19 @@ map('n', '<leader>tl', ':TestLast<CR>')
 map('n', '<leader>tv', ':TestVisit<CR>')
 
 -- [[COLORSCHEME]] --
-vim.pack.add({{src = 'https://github.com/neanias/everforest-nvim'}})
-require 'everforest'.setup()
-vim.cmd.colorscheme 'everforest'
-
+vim.pack.add({{src = 'https://github.com/catppuccin/nvim'}})
+require 'catppuccin'.setup()
+vim.cmd.colorscheme 'catppuccin-macchiato'
+vim.keymap.set("n", "<leader>ub", function()
+  if vim.o.background == "dark" then
+    vim.o.background = "light"
+  else
+    vim.o.background = "dark"
+  end
+end)
 
 -- [[LSP]] --
 require('lsp')
-
 
 -- [[COMPLETION]]
 require('cmp')
