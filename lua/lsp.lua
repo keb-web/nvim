@@ -7,16 +7,16 @@ require 'mason'.setup()
 
 -- native lsp keymaps
 local map = vim.keymap.set
-map('n', 'grn', vim.lsp.buf.rename)
-map('n', 'gra', vim.lsp.buf.code_action)
-map("n", "gd", vim.lsp.buf.definition)
+-- map('n', 'grn', vim.lsp.buf.rename, {desc='rename'})
+-- map('n', 'gra', vim.lsp.buf.code_action, {desc='code action'})
+-- map('n', 'grr', vim.lsp.buf.references, {desc='references'})
+-- map('n', 'gri', vim.lsp.buf.implementation, {desc='implementation'})
+-- map('n', 'grt', vim.lsp.buf.type_definition, {desc='type definition'})
+-- map("n", "gd", vim.lsp.buf.definition, {desc='definition'})
+-- map("n", "gO", vim.lsp.buf.document_symbol, {desc='symbols'})
 map("n", "<leader>ud", function()
-  if vim.diagnostic.is_enabled() then
-    vim.diagnostic.disable()
-  else
-    vim.diagnostic.enable()
-  end
-end, { desc = "Toggle diagnostics" })
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "diagnostics" })
 
 -- turn off lsp when working on nvim files
 vim.lsp.config('lua_ls', {

@@ -41,54 +41,57 @@ vim.diagnostic.config { virtual_text = false }
 vim.pack.add({
   { src = 'https://github.com/Bekaboo/deadcolumn.nvim'},
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
-  { src = 'https://github.com/cohama/lexima.vim'},
+  { src = 'https://github.com/windwp/nvim-autopairs'},
   { src = 'https://github.com/kdheepak/lazygit.nvim' },
   { src = 'https://github.com/echasnovski/mini.ai' },
+  { src = 'https://github.com/echasnovski/mini.clue'},
   { src = 'https://github.com/echasnovski/mini.files' },
   { src = 'https://github.com/echasnovski/mini.icons' },
   { src = 'https://github.com/echasnovski/mini.pick' },
   { src = 'https://github.com/echasnovski/mini.notify' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main', build = ':TSUpdate' },
+  { src = 'https://github.com/nvim-lua/plenary.nvim' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/mfussenegger/nvim-lint' },
   { src = 'https://github.com/folke/persistence.nvim'},
+  { src = 'https://github.com/ThePrimeagen/refactoring.nvim' },
   { src = 'https://github.com/rachartier/tiny-inline-diagnostic.nvim' },
-	{ src = 'https://github.com/vim-test/vim-test'},
+  { src = 'https://github.com/vim-test/vim-test'},
   { src = 'https://github.com/christoomey/vim-tmux-navigator'},
 })
 
 require "nvim-treesitter".setup()
 vim.api.nvim_create_autocmd('FileType', {
-pattern = { 'python', 'rust', 'javascript', 'zig' },
+pattern = { 'python', 'javascript'},
 callback = function()
   vim.treesitter.start() -- Neovim syntax highlighting
   vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Neovim Folds
   vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Neovim indentation
 end,
-
 })
+
 require 'deadcolumn'.setup()
 require 'gitsigns'.setup()
 require 'mini.ai'.setup()
+require('clue')
 require 'mini.files'.setup()
 require 'mini.icons'.setup()
 require 'mini.pick'.setup()
 require 'mini.notify'.setup()
+require 'nvim-autopairs'.setup()
 require 'nvim-treesitter'.setup()
 require 'nvim-surround'.setup()
 require 'persistence'.setup()
-require 'tiny-inline-diagnostic'.setup({
-  options = { multilines = {enabled = true} }
-})
+require 'refactoring'.setup()
+require 'tiny-inline-diagnostic'.setup({options = { multilines = {enabled = true}}})
 
 
 -- [[MAPPINGS]] --
 local map = vim.keymap.set
 
 -- general mappings
-map('n', '<leader>w', ':write<CR>')
-map('n', '<leader>q', ':quit<CR>')
+map('n', '<leader>w', ':write<CR>', {desc='write'})
+map('n', '<leader>q', ':quit<CR>', {desc='quit'})
 map('n', '<C-h>', '<C-w><C-h>')
 map('n', '<C-l>', '<C-w><C-l>')
 map('n', '<C-j>', '<C-w><C-j>')
@@ -97,35 +100,48 @@ map('n', '<M-tab>', '<cmd>e #<cr>') -- Alt-Tab
 map('n', '<Esc>', '<cmd>nohlsearch<CR>') -- Clear Search
 
 -- plugin mappings
-map('n', '<leader>f', ':Pick files<CR>')
-map('n', '<leader>h', ':Pick help<CR>')
-map('n', '<leader>/', ':lua MiniPick.builtin.grep_live()<CR>')
-map('n', '<leader>e', ':lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>')
-map('n', '<leader>E', ':lua MiniFiles.open(vim.uv.cwd())<CR>')
-map('n', '<leader>p', function() require('persistence').load() end)
-map('n', '<leader>lg', '<cmd>LazyGit<CR>')
-map('n', '<c-h>', ':<C-U>TmuxNavigateLeft<CR>' )
-map('n', '<c-j>', ':<C-U>TmuxNavigateDown<CR>' )
-map('n', '<c-k>', ':>TmuxNavigateUp<CR>' )
-map('n', '<c-l>', ':<C-U>TmuxNavigateRight<CR>' )
-map('n', '<leader>tn', ':TestNearest<CR>')
-map('n', '<leader>tf', ':TestFile<CR>')
-map('n', '<leader>ts', ':TestSuite<CR>')
-map('n', '<leader>tc', ':TestClass<CR>')
-map('n', '<leader>tl', ':TestLast<CR>')
-map('n', '<leader>tv', ':TestVisit<CR>')
+map('n', '<leader>f', ':Pick files<CR>', {desc='find'})
+map('n', '<leader>h', ':Pick help<CR>', {desc='help'})
+map('n', '<leader>/', ':lua MiniPick.builtin.grep_live()<CR>', {desc='grep'})
+map('n', '<leader>e', ':lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>', {desc='explore buf'})
+map('n', '<leader>E', ':lua MiniFiles.open(vim.uv.cwd())<CR>', {desc='explore cwd'})
+
+map('n', '<leader>p', function() require('persistence').load() end, {desc='persist'})
+map('n', '<leader>l', '<cmd>LazyGit<CR>', {desc='lazygit'})
+
+map('n', '<c-h>', ':<C-U>TmuxNavigateLeft<CR>')
+map('n', '<c-j>', ':<C-U>TmuxNavigateDown<CR>')
+map('n', '<c-k>', ':>TmuxNavigateUp<CR>')
+map('n', '<c-l>', ':<C-U>TmuxNavigateRight<CR>')
+
+map('n', '<leader>tn', ':TestNearest<CR>', {desc='nearest'})
+map('n', '<leader>tf', ':TestFile<CR>', {desc='file'})
+map('n', '<leader>ts', ':TestSuite<CR>', {desc='suite'})
+map('n', '<leader>tc', ':TestClass<CR>', {desc='class'})
+map('n', '<leader>tl', ':TestLast<CR>', {desc='last'})
+map('n', '<leader>tv', ':TestVisit<CR>', {desc='visit'})
+
+map("x", "<leader>re", ":Refactor extract ", {desc='extract'})
+map("x", "<leader>rf", ":Refactor extract_to_file ", {desc='extract to file'})
+map("x", "<leader>rv", ":Refactor extract_var ", {desc='extract to variable'})
+map({ "n", "x" }, "<leader>ri", ":Refactor inline_var", {desc='extract to inline variable'})
+map( "n", "<leader>rI", ":Refactor inline_func", {desc='extract to inline function'})
+map("n", "<leader>rb", ":Refactor extract_block", {desc='extract block'})
+map("n", "<leader>rbf", ":Refactor extract_block_to_file", {desc='extrack block to file'})
 
 -- [[COLORSCHEME]] --
 vim.pack.add({{src = 'https://github.com/catppuccin/nvim'}})
-require 'catppuccin'.setup()
-vim.cmd.colorscheme 'catppuccin-macchiato'
+require 'catppuccin'.setup({
+  background = {light = 'latte', dark = 'frappe'}
+})
+vim.cmd.colorscheme 'catppuccin-frappe'
 vim.keymap.set("n", "<leader>ub", function()
   if vim.o.background == "dark" then
     vim.o.background = "light"
   else
     vim.o.background = "dark"
   end
-end)
+end,{desc='background'})
 
 -- [[LSP]] --
 require('lsp')
