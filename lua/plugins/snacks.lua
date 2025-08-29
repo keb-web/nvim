@@ -22,7 +22,7 @@ return {
       notifier = { enabled = true },
       scroll = { enabled = false },
       lazygit = { enabled = true },
-      zen = { enabled = true, toggles = { dim = false }, win = { backdrop = { transparent = true, blend = 50 } } },
+      zen = { enabled = true, toggles = { dim = false }, win = { backdrop = { transparent = false, blend = 50 } } },
       picker = { enabled = true },
       dashboard = { enabled = true },
     },
