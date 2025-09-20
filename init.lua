@@ -132,9 +132,9 @@ map("n", "<leader>rbf", ":Refactor extract_block_to_file", {desc='extrack block 
 -- [[COLORSCHEME]] --
 vim.pack.add({{src = 'https://github.com/catppuccin/nvim'}})
 require 'catppuccin'.setup({
-  background = {light = 'latte', dark = 'frappe'}
+  background = {light = 'latte', dark='macchiato'}
 })
-vim.cmd.colorscheme 'catppuccin-frappe'
+vim.cmd.colorscheme 'catppuccin'
 vim.keymap.set("n", "<leader>ub", function()
   if vim.o.background == "dark" then
     vim.o.background = "light"
@@ -190,20 +190,20 @@ vim.api.nvim_create_autocmd("VimEnter", {
   nested = true,
 })
 
-local function clear_cmdarea()
-  vim.defer_fn(function()
-    vim.api.nvim_echo({}, false, {})
-  end, 800)
-end
-vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
-  desc = 'Auto save since im tired of :wa',
-  callback = function()
-    if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
-      vim.cmd 'silent w'
-      clear_cmdarea()
-    end
-  end,
-})
-
+-- local function clear_cmdarea()
+--   vim.defer_fn(function()
+--     vim.api.nvim_echo({}, false, {})
+--   end, 800)
+-- end
+-- vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
+--   desc = 'Auto save since im tired of :wa',
+--   callback = function()
+--     if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
+--       vim.cmd 'silent w'
+--       clear_cmdarea()
+--     end
+--   end,
+-- })
+--
 
 -- vim: ts=2 sts=2 sw=2 et
