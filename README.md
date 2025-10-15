@@ -6,3 +6,6 @@ ensure you are using nightly
 looking into
 - refactoring
 - grug.far
+
+nice to have
+- debugger

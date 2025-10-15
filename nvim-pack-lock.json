@@ -1,0 +1,43 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "version": "1.0.0 - 2.0.0"
+    },
+    "conform.nvim": {
+      "rev": "fbcb4fa",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "deadcolumn.nvim": [],
+    "gitsigns.nvim": [],
+    "gruvbox-material.nvim": [],
+    "lazygit.nvim": [],
+    "mason-lspconfig.nvim": [],
+    "mason.nvim": [],
+    "mini.ai": [],
+    "mini.clue": [],
+    "mini.files": [],
+    "mini.icons": [],
+    "mini.pick": [],
+    "mini.snippets": [],
+    "mini.splitjoin": [],
+    "mini.statusline": [],
+    "no-neck-pain.nvim": [],
+    "nvim-autopairs": [],
+    "nvim-lint": [],
+    "nvim-lspconfig": [],
+    "nvim-surround": [],
+    "nvim-treesitter": {
+      "version": "'main'"
+    },
+    "persistence.nvim": [],
+    "plenary.nvim": [],
+    "refactoring.nvim": [],
+    "tiny-inline-diagnostic.nvim": [],
+    "toggleterm.nvim": {
+      "rev": "9a88eae",
+      "src": "https://github.com/akinsho/toggleterm.nvim"
+    },
+    "vim-test": [],
+    "vim-tmux-navigator": []
+  }
+}
