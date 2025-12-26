@@ -2,8 +2,12 @@ return {
   'f4z3r/gruvbox-material.nvim',
   lazy = false,
   config = function()
+    local colors = require('gruvbox-material.colors').get(vim.o.background, 'medium')
     require('gruvbox-material').setup {
       background = { light = 'light', dark = 'dark' },
+      float = {
+        background_color = colors.bg0,
+      },
       contrast = 'soft',
     }
     vim.cmd.colorscheme 'gruvbox-material'

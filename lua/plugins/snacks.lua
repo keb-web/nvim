@@ -1,7 +1,10 @@
 return {
   {
     'folke/todo-comments.nvim',
-    event = 'VimEnter',
+    event = {
+      'BufReadPre',
+      'BufNewFile',
+    },
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
     keys = { {
@@ -24,7 +27,7 @@ return {
       lazygit = { enabled = true },
       zen = { enabled = true, toggles = { dim = false }, win = { backdrop = { transparent = false, blend = 50 } } },
       picker = { enabled = true },
-      dashboard = { enabled = true },
+      dashboard = { enabled = false },
     },
 	-- stylua: ignore
     keys = {
