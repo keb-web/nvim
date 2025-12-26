@@ -7,12 +7,12 @@ return {
     --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
     --  - ci'  - [C]hange [I]nside [']quote
 
-    'echasnovski/mini.ai',
+    'nvim-mini/mini.ai',
     version = '*',
     opts = {},
   },
   {
-    'echasnovski/mini.files',
+    'nvim-mini/mini.files',
     opts = {
       windows = {
         preview = false,
@@ -38,10 +38,18 @@ return {
     },
   },
   {
-    'echasnovski/mini.icons',
+    'nvim-mini/mini.icons',
     version = '*',
     config = function()
       require('mini.icons').setup {}
+    end,
+  },
+  {
+    'nvim-mini/mini.splitjoin',
+    version = '*',
+    config = function()
+      require('mini.splitjoin').setup {}
+      vim.keymap.set('n', '<leader>rs', ':lua MiniSplitjoin.toggle()<CR>', { desc = 'split/join' })
     end,
   },
 }

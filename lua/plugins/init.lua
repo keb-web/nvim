@@ -4,11 +4,6 @@
 -- See the kickstart.nvim README for more information
 return {
   {
-    'folke/persistence.nvim',
-    event = 'BufReadPre',
-    opts = {},
-  },
-  {
     'rachartier/tiny-inline-diagnostic.nvim',
     event = 'VeryLazy',
     priority = 1000,
