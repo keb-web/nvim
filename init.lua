@@ -48,4 +48,24 @@ require 'keymaps'
 require 'lazy-bootstrap'
 require 'lazy-plugins'
 
+-- Define your custom colors
+local custom_colors = {
+  red = '#F2594B',
+}
+
+local function set_flash_hl()
+  vim.api.nvim_set_hl(0, 'FlashLabel', {
+    fg = custom_colors.red,
+    bold = true,
+  })
+end
+
+-- Apply now
+set_flash_hl()
+
+-- Reapply after colorscheme changes
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = set_flash_hl,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
