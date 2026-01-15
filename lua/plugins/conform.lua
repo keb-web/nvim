@@ -1,48 +1,50 @@
+local supported = {
+  'javascript',
+  'javascriptreact',
+  'typescript',
+  'typescriptreact',
+  'json',
+  'css',
+  'scss',
+  'html',
+}
+
 return {
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>c',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
-        mode = '',
-        desc = 'conform',
-      },
-    },
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
-        else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
-        end
+  'stevearc/conform.nvim',
+  -- event = { 'BufWritePre' },
+  cmd = { 'ConformInfo' },
+  keys = {
+    {
+      '<leader>c',
+      function()
+        require('conform').format { async = true, lsp_format = 'never' }
       end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        python = { 'autoflake' },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      },
-      formatters = {
-        -- ruff = {
-        --   prepend_args = { '--line-length=80' },
-        -- },
-      },
+      mode = '',
+      desc = 'conform',
     },
   },
+
+  opts = function(_, opts)
+    -- keep existing options
+    opts.notify_on_error = false
+    -- format on save (no LSP for web files)
+
+    -- formatters by filetype
+    opts.formatters_by_ft = opts.formatters_by_ft or {}
+
+    for _, ft in ipairs(supported) do
+      opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
+      table.insert(opts.formatters_by_ft[ft], 'prettier')
+    end
+
+    -- lua / python extras
+    opts.formatters_by_ft['lua'] = { 'stylua' }
+    opts.formatters_by_ft['python'] = { 'autoflake', 'black' }
+
+    -- prettier config
+    -- opts.formatters = opts.formatters or {}
+    -- opts.formatters.prettier = {
+    --   prepend_args = { '--tab-width', '2', '--no-use-tabs' },
+    -- }
+  end,
 }
--- vim: ts=2 sts=2 sw=2 et

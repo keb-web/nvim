@@ -20,8 +20,12 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
+      styles = {
+        zen = {
+          width = 160,
+        },
+      },
       indent = { enabled = true },
-      bufdelete = { enabled = true },
       notifier = { enabled = true },
       scroll = { enabled = true },
       lazygit = { enabled = true },
@@ -50,7 +54,6 @@ return {
       { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
       { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
 	  { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
-	  { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
 	  { "<leader>z", function() Snacks.zen() end, desc = "Toggle Zen Mode" },
 	  { "<leader>Z", function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
 		},

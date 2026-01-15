@@ -19,4 +19,11 @@ return {
       vim.diagnostic.config { virtual_text = false } -- Disable default virtual text
     end,
   },
+  {
+    'petertriho/nvim-scrollbar',
+    config = function()
+      local colors = require 'gruvbox-material.colors'
+      require('scrollbar').setup {}
+    end,
+  },
 }

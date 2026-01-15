@@ -68,4 +68,13 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   callback = set_flash_hl,
 })
 
+-- ignore tsls & eslint formatting for prettier
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client.name == 'ts_ls' or client.name == 'eslint' then
+      client.server_capabilities.documentFormattingProvider = false
+    end
+  end,
+})
 -- vim: ts=2 sts=2 sw=2 et
