@@ -65,19 +65,6 @@ vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
   end,
 })
 
--- local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
--- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'TextChanged', 'InsertLeave' }, {
---   desc = 'Execute linting on specified events',
---   group = lint_augroup,
---   callback = function()
---     -- Only run the linter in buffers that you can modify
---     if vim.bo.modifiable then
---       lint.try_lint()
---     end
---   end,
--- })
---
-
 -- -- Define vertical column for python files
 -- vim.api.nvim_create_autocmd('FileType', {
 --   desc = 'Add right margin ruler for python files',

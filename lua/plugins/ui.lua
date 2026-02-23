@@ -18,7 +18,30 @@ return {
     'folke/noice.nvim',
     event = 'VeryLazy',
     opts = {
-      -- add any options here
+      views = {
+        -- Apply single borders to various views
+        cmdline_popup = {
+          border = {
+            style = 'single',
+          },
+        },
+        popup = {
+          border = {
+            style = 'single',
+          },
+        },
+        hover = {
+          border = {
+            style = 'single',
+          },
+        },
+        confirm = {
+          border = {
+            style = 'single',
+          },
+        },
+        -- ... other views you want to configure
+      }, -- add any options here
     },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -35,21 +58,27 @@ return {
     opts = {},
   },
   {
-    'akinsho/bufferline.nvim',
-    version = '*',
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    keys = {
-      { '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle Pin' },
-      { '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-Pinned Buffers' },
-      { '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the Right' },
-      { '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the Left' },
-      { '<S-h>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev Buffer' },
-      { '<S-l>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next Buffer' },
-      { '[b', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev Buffer' },
-      { ']b', '<cmd>BufferLineCycleNext<cr>', desc = 'Next Buffer' },
-      { '[B', '<cmd>BufferLineMovePrev<cr>', desc = 'Move buffer prev' },
-      { ']B', '<cmd>BufferLineMoveNext<cr>', desc = 'Move buffer next' },
-    },
-    opts = {},
+    'rachartier/tiny-inline-diagnostic.nvim',
+    event = 'VeryLazy',
+    priority = 1000,
+    config = function()
+      require('tiny-inline-diagnostic').setup {
+        options = {
+          multilines = {
+            -- Enable multiline diagnostic messages
+            enabled = true,
+          },
+        },
+      }
+      vim.diagnostic.config { virtual_text = false } -- Disable default virtual text
+    end,
   },
+  {
+    'petertriho/nvim-scrollbar',
+    config = function()
+      local colors = require 'gruvbox-material.colors'
+      require('scrollbar').setup {}
+    end,
+  },
+
 }
