@@ -28,6 +28,7 @@ return {
       { ']B', '<cmd>BufferLineMoveNext<cr>', desc = 'Move buffer next' },
       { '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle Pin' },
       { '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-Pinned Buffers' },
+      { '<leader>bd', '<Cmd>bd<CR>', desc = 'buffer delete' },
     },
     opts = {},
   },
