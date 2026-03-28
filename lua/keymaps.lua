@@ -11,7 +11,8 @@ map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 map('n', 'U', '<C-r>', { desc = 'Redo' })
 
 -- alt-tab
-map('n', '<M-tab>', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+-- map('n', '<M-tab>', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+map('n', '<M-Tab>', '<C-^>', { desc = 'Switch to Other Buffer' })
 
 map('n', '<leader>w', ':write<CR>', { desc = 'write' })
 map('n', '<leader>q', ':quit<CR>', { desc = 'quit' })
@@ -58,8 +59,9 @@ end
 vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
   desc = 'Auto save since im tired of :wa',
   callback = function()
-    if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
-      vim.cmd 'silent w'
+    -- Only save if the buffer is a file, is listed, and not in diff mode
+    if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted and vim.bo.buftype == '' and not vim.wo.diff then
+      vim.cmd 'silent! w'
       clear_cmdarea()
     end
   end,

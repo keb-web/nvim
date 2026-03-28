@@ -55,7 +55,15 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {},
+    config = function ()
+      require('lualine').setup({
+        options = {
+          theme = 'gruvbox',
+          section_separators = '',
+          component_separators = ''
+        }
+      })
+    end
   },
   {
     'rachartier/tiny-inline-diagnostic.nvim',
@@ -80,5 +88,16 @@ return {
       require('scrollbar').setup {}
     end,
   },
-
+  {
+    'utilyre/barbecue.nvim',
+    name = 'barbecue',
+    version = '*',
+    dependencies = {
+      'SmiteshP/nvim-navic',
+      'nvim-tree/nvim-web-devicons', -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+  },
 }
