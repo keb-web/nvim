@@ -39,7 +39,7 @@ return {
 
     -- lua / python extras
     opts.formatters_by_ft['lua'] = { 'stylua' }
-    opts.formatters_by_ft['python'] = { 'autoflake', 'black' }
+    opts.formatters_by_ft[python] = { 'ruff', 'autoflake', 'black' }
 
     -- prettier config
     -- opts.formatters = opts.formatters or {}
