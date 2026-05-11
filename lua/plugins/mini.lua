@@ -11,6 +11,15 @@ return {
     version = '*',
     opts = {},
   },
+  -- {
+  --   'nvim-mini/mini.diff',
+  --   version = '*',
+  --   opts = {
+  --     view = {
+  --       style = 'sign'
+  --     }
+  --   },
+  -- },
   {
     'nvim-mini/mini.files',
     opts = {
