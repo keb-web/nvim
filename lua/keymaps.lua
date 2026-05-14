@@ -67,6 +67,11 @@ vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
   end,
 })
 
+vim.keymap.set("n", "<leader>pwd", function()
+  local cwd = vim.fn.getcwd()
+  vim.fn.setreg("+", cwd)
+  print("CWD copied: " .. cwd)
+end, { desc = "Copy current working directory" })
 -- -- Define vertical column for python files
 -- vim.api.nvim_create_autocmd('FileType', {
 --   desc = 'Add right margin ruler for python files',
