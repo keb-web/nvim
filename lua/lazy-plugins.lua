@@ -24,6 +24,25 @@ require('lazy').setup {
     end,
   },
 
+  -- ── Markdown ───────────────────────────────────────────────────────────
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft   = { 'markdown' },
+    opts = {},
+    keys = {
+      { '<leader>tm', '<cmd>RenderMarkdown toggle<cr>', ft = 'markdown', desc = 'Toggle markdown render' },
+    },
+  },
+
+  {
+    'iamcco/markdown-preview.nvim',
+    ft    = { 'markdown' },
+    build = 'cd app && npm install',
+    keys  = {
+      { '<leader>tp', '<cmd>MarkdownPreviewToggle<cr>', ft = 'markdown', desc = 'Toggle markdown preview (browser)' },
+    },
+  },
+
   -- ── Treesitter ─────────────────────────────────────────────────────────
   {
     'nvim-treesitter/nvim-treesitter',
@@ -238,7 +257,12 @@ require('lazy').setup {
     priority = 1000,
     lazy     = false,
     opts     = {
-      picker   = { enabled = true },
+      picker   = {
+        enabled = true,
+        sources = {
+          git_diff = { layout = { preset = 'sidebar' } },
+        },
+      },
       notifier = { enabled = true },
       lazygit  = { enabled = true, win = { style = 'fullscreen' } },
     },
