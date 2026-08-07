@@ -256,16 +256,37 @@ require('lazy').setup {
     'folke/snacks.nvim',
     priority = 1000,
     lazy     = false,
-    opts     = {
-      picker   = {
-        enabled = true,
-        sources = {
-          git_diff = { layout = { preset = 'sidebar' } },
+    opts     = function()
+      -- Terminal is transparent, so make ONLY the git_diff picker transparent
+      -- (grep/files stay solid). Per-source winhighlight is overwritten by
+      -- snacks, so toggle the shared picker hl groups while git_diff is open
+      -- and restore their originals on close.
+      local groups = { 'SnacksPicker', 'SnacksPickerList', 'SnacksPickerInput' }
+      local saved  = {}
+      return {
+        picker   = {
+          enabled = true,
+          sources = {
+            git_diff = {
+              layout  = { preset = 'sidebar' },
+              on_show = function()
+                for _, g in ipairs(groups) do
+                  saved[g] = vim.api.nvim_get_hl(0, { name = g, link = true })
+                  vim.api.nvim_set_hl(0, g, { bg = 'NONE' })
+                end
+              end,
+              on_close = function()
+                for _, g in ipairs(groups) do
+                  vim.api.nvim_set_hl(0, g, saved[g] or { link = 'NormalFloat' })
+                end
+              end,
+            },
+          },
         },
-      },
-      notifier = { enabled = true },
-      lazygit  = { enabled = true, win = { style = 'fullscreen' } },
-    },
+        notifier = { enabled = true },
+        lazygit  = { enabled = true, win = { style = 'fullscreen' } },
+      }
+    end,
     keys = {
       -- Files / search
       { '<leader>f',  function() Snacks.picker.smart() end,           desc = 'Find files' },

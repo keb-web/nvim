@@ -8,6 +8,9 @@ map('n', '<leader>w', ':write<CR>',                { desc = 'Write' })
 map('n', '<leader>q', ':quit<CR>',                 { desc = 'Quit' })
 map('n', '<leader>Q', vim.diagnostic.setloclist,   { desc = 'Diagnostics' })
 
+map('x', '<', '<gv', { desc = 'Unindent and reselect' })
+map('x', '>', '>gv', { desc = 'Indent and reselect' })
+
 map('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left' })
 map('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right' })
 map('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus down' })
