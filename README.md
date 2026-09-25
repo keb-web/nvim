@@ -18,7 +18,7 @@ Minimal Neovim config built on [lazy.nvim](https://github.com/folke/lazy.nvim).
 
 | Plugin | Purpose |
 |--------|---------|
-| [snacks.nvim](https://github.com/folke/snacks.nvim) | File finder, grep, git pickers, lazygit |
+| [snacks.nvim](https://github.com/folke/snacks.nvim) | File finder, grep, git pickers, lazygit, smooth scrolling |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/mason-org/mason.nvim) | Language servers, auto-installed |
 | [blink.cmp](https://github.com/saghen/blink.cmp) | Completion |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Formatting (manual only) |

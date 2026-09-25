@@ -31,3 +31,7 @@ map('n', '<leader>pwf', function()
   vim.fn.setreg('+', path)
   print('File copied: ' .. path)
 end, { desc = 'Copy file path' })
+
+map('n', '<leader>ud', function()
+  require('diagnostics').toggle()
+end, { desc = 'Toggle inline diagnostics' })

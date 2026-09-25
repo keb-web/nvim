@@ -13,7 +13,7 @@ vim.o.mouse = 'a'
 vim.o.undofile = true
 vim.o.signcolumn = 'yes'
 vim.o.inccommand = 'split'
-vim.o.scrolloff = 10
+vim.o.scrolloff = 20
 vim.o.winborder = 'solid'
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -26,10 +26,7 @@ vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
 
-vim.api.nvim_set_hl(0, 'Normal',     { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'NormalNC',   { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
-
+require 'diagnostics'
 require 'keymaps'
 require 'autocmds'
 require 'lazy-bootstrap'

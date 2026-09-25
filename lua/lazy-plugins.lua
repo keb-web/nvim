@@ -1,3 +1,18 @@
+-- Diff range from the current branch back to its base branch
+local function git_base_range()
+  local base
+  for _, ref in ipairs { 'origin/dev', 'dev', 'origin/main', 'main', 'origin/master', 'master' } do
+    if vim.fn.system { 'git', 'rev-parse', '--verify', '--quiet', ref } ~= '' then
+      base = ref
+      break
+    end
+  end
+  if not base then return 'HEAD' end
+  -- Three-dot (merge-base) diff, or two-dot when the histories are unrelated
+  vim.fn.system { 'git', 'merge-base', base, 'HEAD' }
+  return base .. (vim.v.shell_error == 0 and '...' or '..') .. 'HEAD'
+end
+
 require('lazy').setup {
 
   -- ── Editing ────────────────────────────────────────────────────────────
@@ -106,26 +121,42 @@ require('lazy').setup {
       { 'folke/lazydev.nvim', ft = 'lua',          opts = {} },
     },
     config = function()
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      vim.lsp.config('*', {
+        capabilities = require('blink.cmp').get_lsp_capabilities(),
+      })
 
-      local servers = {
-        lua_ls  = {
-          settings = { Lua = { completion = { callSnippet = 'Replace' } } },
-        },
-        pyright = {},
-        ruff    = {},
-        ts_ls   = {},
-      }
+      -- Interpreter for a project: active venv, in-tree venv, else PATH python3.
+      local function python_path(root)
+        if vim.env.VIRTUAL_ENV then
+          return vim.fs.joinpath(vim.env.VIRTUAL_ENV, 'bin', 'python')
+        end
+        for _, dir in ipairs { '.venv', 'venv', '.env' } do
+          local candidate = vim.fs.joinpath(root or vim.fn.getcwd(), dir, 'bin', 'python')
+          if vim.uv.fs_stat(candidate) then return candidate end
+        end
+        return vim.fn.exepath 'python3'
+      end
+
+      vim.lsp.config('lua_ls', {
+        settings = { Lua = { completion = { callSnippet = 'Replace' } } },
+      })
+
+      -- Without pythonPath, pyright type-checks against the PATH interpreter
+      -- instead of the project's venv.
+      vim.lsp.config('pyright', {
+        before_init = function(_, config)
+          -- Mutated in place: the client shares this table, a reassignment would not reach it.
+          config.settings.python = vim.tbl_deep_extend(
+            'force',
+            config.settings.python or {},
+            { pythonPath = python_path(config.root_dir) }
+          )
+        end,
+      })
 
       -- Install LSP servers via mason-lspconfig
       require('mason-lspconfig').setup {
-        ensure_installed = vim.tbl_keys(servers),
-        handlers = {
-          function(server_name)
-            local cfg = vim.tbl_deep_extend('force', { capabilities = capabilities }, servers[server_name] or {})
-            require('lspconfig')[server_name].setup(cfg)
-          end,
-        },
+        ensure_installed = { 'lua_ls', 'pyright', 'ruff', 'ts_ls' },
       }
 
       -- Install non-LSP tools (formatters) via mason-tool-installer
@@ -158,7 +189,40 @@ require('lazy').setup {
     end,
   },
 
+  -- ── Database ────────────────────────────────────────────────────────────────
+    {
+      'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+     { 'tpope/vim-dadbod', lazy = true },
+     { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+    },
+    cmd = {
+     'DBUI',
+     'DBUIToggle',
+     'DBUIAddConnection',
+     'DBUIFindBuffer',
+    },
+    init = function()
+     -- Your DBUI configuration
+     vim.g.db_ui_use_nerd_fonts = 1
+    end,
+ },
+  
   -- ── Git ────────────────────────────────────────────────────────────────
+
+  {
+    'sindrets/diffview.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd  = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose' },
+    opts = { enhanced_diff_hl = true },
+    keys = {
+      { '<leader>gv', function() vim.cmd('DiffviewOpen ' .. git_base_range()) end, desc = 'Diff branch vs base' },
+      { '<leader>gV', '<cmd>DiffviewOpen<cr>',          desc = 'Diff working tree' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File history (current file)' },
+      { '<leader>gH', '<cmd>DiffviewFileHistory<cr>',   desc = 'File history (branch)' },
+      { '<leader>gq', '<cmd>DiffviewClose<cr>',         desc = 'Close diffview' },
+    },
+  },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -170,6 +234,7 @@ require('lazy').setup {
         changedelete = { text = '~' },
         untracked    = { text = '┆' },
       },
+      preview_config = { border = 'rounded' },
       on_attach = function(bufnr)
         local gs  = require 'gitsigns'
         local map = function(mode, l, r, opts)
@@ -205,8 +270,8 @@ require('lazy').setup {
     lazy     = false,
     config   = function()
       require('catppuccin').setup {
-        flavour              = 'mocha',
-        transparent_background = true,
+        flavour    = 'auto',
+        background = { light = 'latte', dark = 'mocha' },
         integrations = {
           treesitter = true,
           blink_cmp  = true,
@@ -257,34 +322,22 @@ require('lazy').setup {
     priority = 1000,
     lazy     = false,
     opts     = function()
-      -- Terminal is transparent, so make ONLY the git_diff picker transparent
-      -- (grep/files stay solid). Per-source winhighlight is overwritten by
-      -- snacks, so toggle the shared picker hl groups while git_diff is open
-      -- and restore their originals on close.
-      local groups = { 'SnacksPicker', 'SnacksPickerList', 'SnacksPickerInput' }
-      local saved  = {}
       return {
         picker   = {
           enabled = true,
           sources = {
-            git_diff = {
-              layout  = { preset = 'sidebar' },
-              on_show = function()
-                for _, g in ipairs(groups) do
-                  saved[g] = vim.api.nvim_get_hl(0, { name = g, link = true })
-                  vim.api.nvim_set_hl(0, g, { bg = 'NONE' })
-                end
-              end,
-              on_close = function()
-                for _, g in ipairs(groups) do
-                  vim.api.nvim_set_hl(0, g, saved[g] or { link = 'NormalFloat' })
-                end
-              end,
-            },
+            git_diff = { layout = { preset = 'sidebar' } },
           },
         },
         notifier = { enabled = true },
         lazygit  = { enabled = true, win = { style = 'fullscreen' } },
+        scroll   = {
+			enabled = true,
+			animate = {
+				duration = { step = 5, duration = 150}
+			}
+
+		},
       }
     end,
     keys = {
